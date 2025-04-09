@@ -1,0 +1,7 @@
+<h2><%= @product.name %></h2>
+<p><%= @product.description %></p>
+
+<h3>Reviews</h3>
+<% @product.reviews.each do |review| %>
+  <p><%= review.user.email %>: <% review.rating %></p>
+<% end %>
