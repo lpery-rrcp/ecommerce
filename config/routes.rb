@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
-  get "reviews/create"
-  get "orders/index"
-  get "orders/show"
-  get "categories/show"
+  get "pages/home"
+  root "pages#home"
+  # Devise for users & admin
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   devise_for :users
@@ -16,11 +15,11 @@ Rails.application.routes.draw do
   # Categories
   resources :categories, only: [ :show ]
 
-  # Cart
+  # Cart (no HTML view, just actions)
   resource :cart, only: [] do
-    get "succcess"
+    get "success"
     get "cancel"
-    post "add/:product_id", to: "cart#add", as: "add_to"
+    post "add/:product_id", to: "carts#add", as: "add_to"
     delete "remove/:product_id", to: "carts#remove", as: "remove_from"
     patch "update/:product_id", to: "carts#update", as: "update_item"
   end
@@ -34,20 +33,6 @@ Rails.application.routes.draw do
   # Reviews
   resources :reviews, only: [ :create ]
 
-  # Root
+  # Root path
   root "products#index"
-
-
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end
