@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_09_164535) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_09_194615) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -87,6 +87,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_09_164535) do
     t.index ["category_id"], name: "index_products_on_category_id"
   end
 
+  create_table "provinces", force: :cascade do |t|
+    t.string "name"
+    t.decimal "gst"
+    t.decimal "pst"
+    t.decimal "hst"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "reviews", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "rating"
@@ -105,7 +114,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_09_164535) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "role"
+    t.string "address"
+    t.string "city"
+    t.integer "province_id", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["province_id"], name: "index_users_on_province_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -117,4 +130,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_09_164535) do
   add_foreign_key "products", "categories"
   add_foreign_key "products", "users", column: "seller_id"
   add_foreign_key "reviews", "users"
+  add_foreign_key "users", "provinces"
 end
