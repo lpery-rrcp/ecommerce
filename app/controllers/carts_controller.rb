@@ -1,28 +1,33 @@
 class CartsController < ApplicationController
-  def success
+  before_action :authenticate_user!, only: [ :success ]
+
+  def add
+    product_id = params[:product_id].to_s
     session[:cart] ||= {}
+    session[:cart][product_id] = (session[:cart][product_id] || 0) + 1
+    flash[:notice] = "Product added to cart!"
+    redirect_back fallback_location: root_path
+  end
+
+  def update
+    product_id = params[:product_id].to_s
+    quantity = params[:quantity].to_i
+    session[:cart][product_id] = quantity if quantity > 0
+    flash[:notice] = "Quantity updated!"
+    redirect_back fallback_location: root_path
+  end
+
+  def remove
+    session[:cart].delete(params[:product_id].to_s)
+    flash[:alert] = "Product removed from cart."
+    redirect_back fallback_location: root_path
+  end
+
+  def success
+    flash[:success] = "Thank you! Your order was successful. :)"
   end
 
   def cancel
-    if session[:cart].include?(@product.id)
-      session[:cart].delete(@product.id)
-      flash[:notice] = "#{@product.name} was removed from the cart!"
-    end
-
-    redirect_to root_path
-  end
-
-  private
-
-  def add_to_cart(product_id, quantity = 1)
-    cart = current_cart
-    cart[product_id.to_s] = (cart[product_id.to_s] || 0) + quantity.to_i
-    session[:cart] = cart
-  end
-
-  def removed_from_cart(product_id)
-    cart = current_cart
-    cart.delete(product_id.to_s)
-    session[:cart] = cart
+    flash[:alert] = "Your checkout was canceled!"
   end
 end

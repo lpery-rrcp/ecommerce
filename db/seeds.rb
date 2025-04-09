@@ -7,4 +7,17 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+# Remove the tables
+AdminUser.destroy
+Category.destroy
+
 AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+
+categories = %w[Fabric Resin Beads Wood Crafts].map { |name| Catrgory.create!(name: name) }
+
+10.times do
+  Product.create!(
+    name: F
+  )
+end
