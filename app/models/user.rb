@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  belongs_to :province, optional: true
   has_many :products, foreign_key: :seller_id
   has_many :reviews
   # Include default devise modules. Others available are:
