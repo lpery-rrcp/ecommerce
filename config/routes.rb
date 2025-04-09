@@ -1,12 +1,39 @@
 Rails.application.routes.draw do
-  get "products/index"
-  get "products/show"
-  get "checkouts/create"
-  get "carts/success"
-  get "carts/cancel"
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   devise_for :users
+
+  # admin dashboard (ActiveAdmin)
+  resources :products, only: [ :index, :show ]
+
+  # Products
+  resources :products, only: [ :index, :show ]
+
+  # Categories
+  resources :categories, only: [ :show ]
+
+  # Cart
+  resource :cart, only: [] do
+    get "succcess"
+    get "cancel"
+    post "add/:product_id", to: "cart#add", as: "add_to"
+    delete "remove/:product_id", to: "carts#remove", as: "remove_from"
+    patch "update/:product_id", to: "carts#update", as: "update_item"
+  end
+
+  # Checkout
+  resources :checkouts, only: [ :create ]
+
+  # Orders
+  resources :orders, only: [ :index, :show ]
+
+  # Reviews
+  resources :reviews, only: [ :create ]
+
+  # Root
+  root "products#index"
+
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
