@@ -5,9 +5,6 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :users
 
-  # admin dashboard (ActiveAdmin)
-  resources :products, only: [ :index, :show ]
-
   # Products
   resources :products, only: [ :index, :show ]
 
