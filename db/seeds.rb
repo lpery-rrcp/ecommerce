@@ -11,13 +11,20 @@
 # Remove the tables
 AdminUser.destroy
 Category.destroy
+Product.destroy
 
 AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
 
-categories = %w[Fabric Resin Beads Wood Crafts].map { |name| Catrgory.create!(name: name) }
+# db/seeds.rb
+categories = %w[Fabric Resin Beads Wood Crafts].map { |name| Category.create!(name: name) }
 
 10.times do
   Product.create!(
-    name: F
+    name: Faker::Commerce.product_name,
+    description: Faker::Lorem.paragraph,
+    price: Faker::Commerce.price(range: 10..100),
+    stock_quantity: rand(5..50),
+    category: categories.sample,
+    seller: User.first
   )
 end
