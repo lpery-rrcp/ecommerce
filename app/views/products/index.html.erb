@@ -3,7 +3,7 @@
 <% if user_signed_in? %>
   <!-- Show user-related options when signed in -->
   <p>Welcome, <%= current_user.email %>!</p>
-  <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+  <%= link_to "Logout", new_user_registration_path, method: :delete, class: "btn btn-danger" %>
 <% else %>
   <!-- Show login and signup options when not signed in -->
   <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %> |
