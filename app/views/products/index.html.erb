@@ -1,14 +1,28 @@
-<h1>All Products</h1>
+<h1>Welcome to Crafters Den</h1>
 
-<%= search_form_for @q, url: products_path, method: :get do |f| %>
-  <%= f.label :name_cont, 'Search products:' %>
-  <%= f.search_field :name_or_description_cont %>
-
-  <%= f.label :category_id_eq, 'Filter by Category:' %>
-  <%= f.select :category_id_eq, Category.all.collect { |c| [c.name, c.id] }, include_blank: "All" %>
-
-  <%= f.submit 'Search' %>
+<% if user_signed_in? %>
+  <!-- Show user-related options when signed in -->
+  <p>Welcome, <%= current_user.email %>!</p>
+  <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+<% else %>
+  <!-- Show login and signup options when not signed in -->
+  <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %> |
+  <%= link_to "Login", new_user_session_path, class: "btn btn-primary" %>
 <% end %>
 
-<%= render partial: 'product', collection: @products %>
-<%= paginate @products %>
+<h2>Products</h2>
+
+<% if @products.any? %>
+  <ul>
+    <% @products.each do |product| %>
+      <li>
+        <%= product.name %> - <%= number_to_currency(product.price) %>
+        <%= link_to "View Product", product_path(product), class: "btn btn-info" %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No products available.</p>
+<% end %>
+
+<%= link_to "View Cart", cart_path, class: "btn btn-primary" %>

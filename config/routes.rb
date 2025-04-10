@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
-  get "pages/home"
   # Devise for users & admin
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   devise_for :users
+
+  get "pages/home"
 
   # Products
   resources :products, only: [ :index, :show ]
@@ -12,7 +13,7 @@ Rails.application.routes.draw do
   resources :categories, only: [ :show ]
 
   # Cart (no HTML view, just actions)
-  resource :cart, only: [] do
+  resource :cart, only: [ :show ] do
     get "success"
     get "cancel"
     post "add/:product_id", to: "carts#add", as: "add_to"
@@ -20,11 +21,16 @@ Rails.application.routes.draw do
     patch "update/:product_id", to: "carts#update", as: "update_item"
   end
 
+
   # Checkout
   resources :checkouts, only: [ :create ]
+  post "checkout/create", to: "checkouts#create", as: "checkout_create"
+  get "checkout/success", to: "checkouts#success", as: "success"
+  get "checkout/cancel", to: "checkouts#cancel", as: "cancel"
 
   # Orders
   resources :orders, only: [ :index, :show ]
+
 
   # Reviews
   resources :reviews, only: [ :create ]
