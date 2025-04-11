@@ -5,13 +5,7 @@ ActiveAdmin.register Product do
   # filter :image
 
   # Custom filter to check if an image is attached
-  filter :has_image, as: :boolean, label: "Has Image" do |scope, value|
-    if value
-      scope.where.not(id: Product.where.not(image: nil).select(:id))
-    else
-      scope.where(id: Product.where(image: nil).select(:id))
-    end
-  end
+  remove_filter :image_attachment, :image_blob
 
   # Other admin configuration
   index do
