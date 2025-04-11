@@ -1,6 +1,10 @@
 class CategoriesController < ApplicationController
+  def index
+    @categories = Category.all
+  end
+
   def show
-    @Category = Category.find(params[:id])
-    @roducts = @category.products.page(params[:page])
+    @category = Category.find(params[:id])
+    @products = @category.products.page(params[:page])
   end
 end

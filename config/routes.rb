@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :users
 
-  get "pages/home"
+  # Dynamic pages like /pages/about or /pages/contact
+  get "/pages/:slug", to: "pages#show", as: :page
 
   # Products
   resources :products, only: [ :index, :show ] do
@@ -12,7 +13,7 @@ Rails.application.routes.draw do
   end
 
   # Categories
-  resources :categories, only: [ :show ]
+  resources :categories, only: [ :index, :show ]
 
   # Cart (no HTML view, just actions)
   resource :cart, only: [ :show ] do
@@ -35,5 +36,5 @@ Rails.application.routes.draw do
   resources :reviews, only: [ :create ]
 
   # Root path
-  root "products#index"
+  root "pages#home"
 end

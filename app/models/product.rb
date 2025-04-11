@@ -5,6 +5,8 @@ class Product < ApplicationRecord
   has_many :reviews
   has_many :order_items
 
+  has_one_attached :image
+
   def self.ransackable_attributes(auth_object = nil)
     %w[name description category_id id created_at updated_at price stock_quantity seller_id]
   end
