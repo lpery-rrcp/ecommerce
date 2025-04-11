@@ -1,12 +1,20 @@
 # Clean database
 puts "🧼 Cleaning database..."
-User.destroy_all
-Category.destroy_all
+
+puts "Destroying products..."
 Product.destroy_all
+
+puts "Destroying categories..."
+Category.destroy_all
+
+puts "Destroying users..."
+User.destroy_all
+
+puts "Destroying provinces..."
 Province.destroy_all
 
 # Create a default province
-puts "Creating province..."
+puts "🌾 Creating province..."
 manitoba = Province.create!(
   name: "Manitoba",
   gst: 0.05,
@@ -37,8 +45,8 @@ customer = User.create!(
   province: manitoba
 )
 
-# Create categories (you can adjust this based on your categories)
-puts "Creating categories..."
+# Create categories
+puts "📁 Creating categories..."
 category1 = Category.create!(name: "Woodworking")
 category2 = Category.create!(name: "Sewing")
 category3 = Category.create!(name: "Painting")
@@ -46,7 +54,7 @@ category4 = Category.create!(name: "Beading")
 category5 = Category.create!(name: "Knitting")
 
 # Create products using Faker
-puts "Creating faker products..."
+puts "🛍 Creating faker products..."
 100.times do
   Product.create!(
     name: Faker::Commerce.product_name,
@@ -58,9 +66,8 @@ puts "Creating faker products..."
   )
 end
 
-# Create non faker 10 products
-puts "Creating 10 more non faker products..."
-
+# Create non-Faker products
+puts "🧵 Creating 10 non-Faker products..."
 Product.create!([
   { name: "Handcrafted Wooden Chair", description: "A beautifully crafted chair made from solid oak wood, perfect for any living room.", price: 75.00, stock_quantity: 20, category: category1, seller: seller },
   { name: "Sewing Kit Deluxe", description: "All the essentials for sewing, including needles, thread, and scissors.", price: 25.00, stock_quantity: 50, category: category2, seller: seller },
@@ -74,4 +81,4 @@ Product.create!([
   { name: "Knitted Wool Blanket", description: "A large, soft blanket hand-knitted from premium wool, perfect for winter.", price: 60.00, stock_quantity: 8, category: category5, seller: seller }
 ])
 
-puts "Seed data created!"
+puts "✅ Seed data created!"
