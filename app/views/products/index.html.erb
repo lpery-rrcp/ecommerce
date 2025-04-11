@@ -21,6 +21,10 @@
       </li>
     <% end %>
   </ul>
+
+  <!-- Add pagination controls here -->
+  <%= paginate @products %>
+
 <% else %>
   <p>No products available.</p>
 <% end %>

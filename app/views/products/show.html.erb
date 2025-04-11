@@ -11,8 +11,21 @@
 <%= button_to "Add to Cart", add_to_cart_path(@product), method: :post, class: "btn btn-success" %>
 
 <h3>Reviews</h3>
-<% @product.reviews.each do |review| %>
-  <p><%= review.user.email %>: <%= review.rating %> - <%= review.comment %></p>
+
+<% if @reviews.any? %>
+  <ul>
+    <% @reviews.each do |review| %>
+      <li>
+        <p><%= review.user.email %>: <%= review.rating %> - <%= review.comment %></p>
+      </li>
+    <% end %>
+  </ul>
+
+  <!-- Add pagination for reviews -->
+  <%= paginate @reviews %>
+
+<% else %>
+  <p>No reviews yet.</p>
 <% end %>
 
 <% if user_signed_in? %>
