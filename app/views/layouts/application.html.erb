@@ -29,8 +29,11 @@
   <body>
     <nav>
       <%= link_to 'Home', root_path %> |
+      <%= link_to "About Us", about_path, class: "btn btn-info" %> |
+      <%= link_to "Contact", contact_path, class: "btn btn-info" %> |
       <%= link_to 'Products', products_path %> |
       <%= link_to 'Categories', categories_path %>
+
     </nav>
 
     <% if flash[:notice] %>

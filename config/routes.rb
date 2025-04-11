@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   # Dynamic pages like /pages/about or /pages/contact
   get "/pages/:slug", to: "pages#show", as: :page
+  get "/about", to: "pages#show", defaults: { slug: "about" }
+  get "/contact", to: "pages#show", defaults: { slug: "contact" }
 
   # Products
   resources :products, only: [ :index, :show ] do
