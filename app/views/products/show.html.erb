@@ -1,6 +1,13 @@
 <h2><%= @product.name %></h2>
 <p><%= @product.description %></p>
 
+<% if @product.category %>
+  <p>
+    Category:
+    <%= link_to @product.category.name, category_path(@product.category), class: "btn btn-outline-primary btn-sm" %>
+  </p>
+<% end %>
+
 <%= button_to "Add to Cart", add_to_cart_path(@product), method: :post, class: "btn btn-success" %>
 
 <h3>Reviews</h3>
@@ -18,4 +25,4 @@
   <% end %>
 <% end %>
 
-<%= link_to "Return to Shop", products_path %>
+<%= link_to "Return to Shop", products_path, class: "btn btn-secondary mt-3" %>
