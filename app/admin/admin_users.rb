@@ -1,29 +1,30 @@
-# app/admin/products.rb
-ActiveAdmin.register Product do
-  permit_params :name, :price, :description, :image # Add any other fields
-
-  form do |f|
-    f.inputs do
-      f.input :name
-      f.input :price
-      f.input :description
-      f.input :image, as: :file
-    end
-    f.actions
+ActiveAdmin.register Order do
+  # Customize the index page here
+  index do
+    selectable_column
+    id_column
+    column :user
+    column :total_price
+    column :status
+    column :created_at
+    actions
   end
 
+  # Show details for each order
   show do
     attributes_table do
-      row :name
-      row :price
-      row :description
-      row :image do |product|
-        if product.image.attached?
-          image_tag url_for(product.image), style: "max-width: 200px;"
-        else
-          "No Image"
-        end
-      end
+      row :user
+      row :total_price
+      row :status
+      row :created_at
+      row :updated_at
+      # Add more details if needed
     end
+    active_admin_comments
   end
+
+  # Add filters if needed
+  filter :status
+  filter :created_at
+  filter :user
 end

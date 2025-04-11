@@ -32,6 +32,13 @@ Rails.application.routes.draw do
   # Orders
   resources :orders, only: [ :index, :show ]
 
+  # Admin routes
+  namespace :admin do
+    resources :orders
+    resources :products
+    resources :categories
+  end
+
   # Reviews
   resources :reviews, only: [ :create ]
 
