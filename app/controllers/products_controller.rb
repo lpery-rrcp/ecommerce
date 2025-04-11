@@ -1,21 +1,25 @@
 class ProductsController < ApplicationController
   def index
-    @q = Product.ransack(params[:q])
+    @categories = Category.all
 
-    # If there's a category filter, filter by it
-    if params[:category_id].present?
-      @products = Product.where(category_id: params[:category_id])
-    else
-      @products = Product.all
-    end
+    @products = Product.all
 
-    # If a search keyword is provided, filter by name or description
     if params[:search].present?
-      @products = @products.where("name LIKE ? OR description LIKE ?", "%#{params[:search]}%", "%#{params[:search]}%")
+      keyword = params[:search].downcase
+      @products = @products.where(
+        "LOWER(name) LIKE ? OR LOWER(description) LIKE ?",
+        "%#{keyword}%",
+        "%#{keyword}%"
+      )
     end
 
-    @products = @products.page(params[:page]).per(10)
+    if params[:category_id].present?
+      @products = @products.where(category_id: params[:category_id])
+    end
+
+    @products = @products.includes(:category).page(params[:page]).per(10)
   end
+
 
   def show
     @product = Product.find(params[:id])

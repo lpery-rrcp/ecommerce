@@ -5,16 +5,17 @@ class CategoriesController < ApplicationController
 
   def show
     @category = Category.find(params[:id])
-
-    # Get the products of the selected category
     @products = @category.products
 
-    # If there's a search keyword, filter the products by name or description
     if params[:search].present?
-      @products = @products.where("name LIKE ? OR description LIKE ?", "%#{params[:search]}%", "%#{params[:search]}%")
+      keyword = params[:search].downcase
+      @products = @products.where(
+        "LOWER(name) LIKE ? OR LOWER(description) LIKE ?",
+        "%#{keyword}%",
+        "%#{keyword}%"
+      )
     end
 
-    # Paginate the products
     @products = @products.page(params[:page]).per(10)
   end
 end
