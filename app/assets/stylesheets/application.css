@@ -1,4 +1,7 @@
 @import "bootstrap";
+@import "active_admin/mixins";
+@import "active_admin/base";
+
 
 /* app/assets/stylesheets/application.css */
 .flash-notice {

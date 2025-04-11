@@ -23,19 +23,7 @@
 
 <hr>
 
-<h2>Products</h2>
-
-<% if @products.present? %>
-  <ul>
-    <% @products.each do |product| %>
-      <li>
-        <%= product.name %> - <%= number_to_currency(product.price) %>
-        <%= link_to "View Product", product_path(product), class: "btn btn-info" %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>No products available.</p>
-<% end %>
-
-<%= link_to "View Cart", cart_path, class: "btn btn-primary" %>
+<h2>Explore Our Categories</h2>
+<%= link_to "View Products", products_path, class: "btn btn-primary" %> |
+<%= link_to "View Categories", categories_path, class: "btn btn-primary" %> |
+<%= link_to "View Orders", orders_path, class: "btn btn-primary" %>
