@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   get "pages/home"
 
   # Products
-  resources :products, only: [ :index, :show ]
+  resources :products, only: [ :index, :show ] do
+    resources :reviews, only: [ :create ]
+  end
 
   # Categories
   resources :categories, only: [ :show ]
@@ -21,16 +23,13 @@ Rails.application.routes.draw do
     patch "update/:product_id", to: "carts#update", as: "update_item"
   end
 
-
   # Checkout
   resources :checkouts, only: [ :create ]
-  post "checkout/create", to: "checkouts#create", as: "checkout_create"
   get "checkout/success", to: "checkouts#success", as: "success"
   get "checkout/cancel", to: "checkouts#cancel", as: "cancel"
 
   # Orders
   resources :orders, only: [ :index, :show ]
-
 
   # Reviews
   resources :reviews, only: [ :create ]
