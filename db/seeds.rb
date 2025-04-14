@@ -52,6 +52,18 @@ category3 = Category.create!(name: "Painting")
 category4 = Category.create!(name: "Beading")
 category5 = Category.create!(name: "Knitting")
 
+# page
+puts "Making Pages (about and Contact)"
+Page.find_or_create_by!(slug: 'about') do |page|
+  page.title = 'About Us'
+  page.content = 'Initial about us content.'
+end
+
+Page.find_or_create_by!(slug: 'contact') do |page|
+  page.title = 'Contact Us'
+  page.content = 'Initial contact us content.'
+end
+
 # Create products using Faker
 puts "🛍 Creating faker products..."
 100.times do
