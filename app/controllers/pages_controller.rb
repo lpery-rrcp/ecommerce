@@ -1,7 +1,7 @@
-# app/controllers/pages_controller.rb
 class PagesController < ApplicationController
-  def home
-  end
+  skip_before_action :authenticate_user!, only: [ :show, :home ]
+
+  def home; end
 
   def show
     @page = Page.find_by!(slug: params[:slug])
