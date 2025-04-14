@@ -15,12 +15,11 @@ Province.destroy_all
 
 # Create a default province
 puts "🌾 Creating province..."
-manitoba = Province.create!(
-  name: "Manitoba",
-  gst: 0.05,
-  pst: 0.07,
-  hst: 0.0
-)
+manitoba = Province.create!(name: "Manitoba", gst: 0.05, pst: 0.07, hst: 0.0)
+ontario = Province.create!(name: "Ontario", gst: 0.05, pst: 0.08, hst: 0.13)
+bc = Province.create!(name: "British Columbia", gst: 0.05, pst: 0.07, hst: 0.12)
+alberta = Province.create!(name: "Alberta", gst: 0.05, pst: 0.00, hst: 0.05)
+
 
 # Users with province assigned
 puts "👤 Creating users..."
