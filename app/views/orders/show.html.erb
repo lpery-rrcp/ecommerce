@@ -1,28 +1,5 @@
-<h1>Order #<%= @order.id %></h1>
-
-<p>Status: <%= @order.status %></p>
-<p>Total: <%= number_to_currency(@order.total_price) %></p>
-
-<h3>Items</h3>
-<table>
-  <thead>
-    <tr>
-      <th>Product</th>
-      <th>Quantity</th>
-      <th>Unit Price</th>
-      <th>Subtotal</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @order.order_items.each do |order_item| %>
-      <tr>
-        <td><%= order_item.product.name %></td>
-        <td><%= order_item.quantity %></td>
-        <td><%= number_to_currency(order_item.unit_price) %></td>
-        <td><%= number_to_currency(order_item.quantity * order_item.unit_price) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= link_to "Back to Orders", orders_path, class: "btn btn-outline-secondary" %>
+<p><strong>Subtotal:</strong> <%= number_to_currency(@order.order_items.sum { |i| i.unit_price * i.quantity }) %></p>
+<p><strong>GST:</strong> <%= number_to_currency(@order.user.province.gst * @order.total_price) %></p>
+<p><strong>PST:</strong> <%= number_to_currency(@order.user.province.pst * @order.total_price) %></p>
+<p><strong>HST:</strong> <%= number_to_currency(@order.user.province.hst * @order.total_price) %></p>
+<p><strong>Total:</strong> <%= number_to_currency(@order.total_price) %></p>

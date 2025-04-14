@@ -35,18 +35,24 @@ class CheckoutsController < ApplicationController
     cart = session[:cart] || {}
     return redirect_to root_path, alert: "Cart is empty." if cart.empty?
 
-    order = current_user.orders.build(status: :paid)
-    total = 0
+    if current_user.province.nil?
+      return redirect_to edit_profile_path, alert: "Please complete your address to calculate taxes."
+    end
+
+    province = current_user.province
+    order = current_user.orders.build(status: :paid, customer_id: current_user.id)
+
+
+    subtotal = 0
 
     cart.each do |product_id, qty|
       product = Product.find(product_id)
-      subtotal = product.price * qty.to_i
+      subtotal += product.price * qty.to_i
       order.order_items.build(product: product, quantity: qty, unit_price: product.price)
-      total += subtotal
     end
 
-    tax = calculate_tax(total)
-    order.total_price = total + tax[:total_tax]
+    tax_details = province.calculate_tax(subtotal)
+    order.total_price = (subtotal + tax_details[:total_tax]).round
     order.save!
 
     Payment.create!(
@@ -62,6 +68,7 @@ class CheckoutsController < ApplicationController
     redirect_to orders_path
   end
 
+
   def cancel
     flash[:alert] = "Payment canceled."
     redirect_to cart_path
@@ -70,9 +77,16 @@ class CheckoutsController < ApplicationController
   private
 
   def calculate_tax(total)
-    # Define your tax calculation logic here
-    tax_rate = 0.10  # For example, 10% tax rate
-    total_tax = total * tax_rate
-    { total_tax: total_tax }
+    province = current_user.province
+    gst = (total * province.gst.to_f).round(2)
+    pst = (total * province.pst.to_f).round(2)
+    hst = (total * province.hst.to_f).round(2)
+
+    {
+      gst: gst,
+      pst: pst,
+      hst: hst,
+      total_tax: (gst + pst + hst).round(2)
+    }
   end
 end
