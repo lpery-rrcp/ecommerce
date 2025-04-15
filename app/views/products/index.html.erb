@@ -1,16 +1,26 @@
 <h1>Welcome to Crafters Den</h1>
 
 <% if user_signed_in? %>
-  <!-- Show user-related options when signed in -->
   <p>Welcome, <%= current_user.email %>!</p>
   <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
 <% else %>
-  <!-- Show login and signup options when not signed in -->
   <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %> |
   <%= link_to "Login", new_user_session_path, class: "btn btn-primary" %>
 <% end %>
 
 <h2>Products</h2>
+
+<%= form_with url: products_path, method: :get, local: true do |f| %>
+  <div class="form-group">
+    <%= f.label :search, "Search Products" %>
+    <%= f.text_field :search, value: params[:search], placeholder: "Search by keyword", class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :category_id, "Category" %>
+    <%= f.collection_select :category_id, Category.all, :id, :name, { include_blank: "All Categories" }, class: "form-control" %>
+  </div>
+  <%= f.submit "Search", class: "btn btn-primary" %>
+<% end %>
 
 <% if @products.any? %>
   <ul>

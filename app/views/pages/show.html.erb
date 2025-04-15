@@ -1,9 +1,45 @@
-<!-- app/views/pages/show.html.erb -->
 <h1><%= @page.title %></h1>
-<div class="page-content">
+
+<div class="mb-4">
   <%= simple_format(@page.content) %>
 </div>
 
-<% if admin_user_signed_in? %>
-  <p><%= link_to "Logout", destroy_admin_user_session_path, method: :delete %></p>
+<h2>Info Pages</h2>
+
+<% if @page.slug == "about" %>
+  <h3>Our Story</h3>
+  <p>Founded in Winnipeg, Crafters Den started as a small corner store for DIY enthusiasts and has grown into a vibrant online community. We aim to support local artisans and provide high-quality crafting supplies.</p>
+
+  <h3>Our Mission</h3>
+  <p>To inspire creativity, empower makers, and build a thriving community of passionate crafters.</p>
+
+  <h3>Meet the Team</h3>
+  <ul>
+    <li><strong>Alice Smith</strong> – Founder & Creative Lead</li>
+    <li><strong>Ben Johnson</strong> – Operations & Logistics</li>
+    <li><strong>Chloe Wong</strong> – Customer Support</li>
+  </ul>
+
+<% elsif @page.slug == "contact" %>
+  <h3>Get in Touch</h3>
+  <p>Have questions, feedback, or need help? We're here for you!</p>
+
+  <h3>Customer Support</h3>
+  <p>Email us at mailto:support@craftersden.com <br><!--<a href="mailto:support@craftersden.com">support@craftersden.com</a><br>-->
+  Call us at (204) 555-1234 (Mon–Fri, 9am–5pm CST)</p>
+
+  <h3>Visit Us</h3>
+  <address>
+    Crafters Den HQ<br>
+    123 Craft Lane<br>
+    Winnipeg, MB R3C 1A5<br>
+    Canada
+  </address>
+
+  <h3>Follow Us</h3>
+  <ul>
+    <li>Instagram</li> <!--<a href="https://instagram.com/craftersden" target="_blank"></a>-->
+    <li>Facebook</li> <!--<a href="https://facebook.com/craftersden" target="_blank"></a>-->
+    <li>Pinterest</li> <!--<a href="https://pinterest.com/craftersden" target="_blank"></a>-->
+  </ul>
 <% end %>

@@ -2,8 +2,8 @@ class Product < ApplicationRecord
   belongs_to :category
   belongs_to :seller, class_name: "User"
 
-  has_many :reviews
-  has_many :order_items
+  has_many :reviews, dependent: :destroy
+  has_many :order_items, dependent: :destroy
 
   has_one_attached :image
 
