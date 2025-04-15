@@ -1,21 +1,32 @@
 ActiveAdmin.register Product do
-  permit_params :name, :description, :category_id, :price, :stock_quantity, :seller_id, :image
+  permit_params :name, :description, :category_id, :price, :stock_quantity, :seller_id, :image, :on_sale
+  # 🔼 Added `:on_sale` to permit_params
 
-  # Remove the invalid filter for :image
-  # filter :image
-
-  # Custom filter to check if an image is attached
   remove_filter :image_attachment, :image_blob
 
-  # Other admin configuration
   index do
     selectable_column
     column :name
     column :price
     column :stock_quantity
+    column :on_sale # Optionally display on_sale status
     column :category
     column :created_at
     actions
+  end
+
+  form do |f|
+    f.inputs do
+      f.input :name
+      f.input :description
+      f.input :category
+      f.input :price
+      f.input :stock_quantity
+      f.input :seller
+      f.input :image, as: :file
+      f.input :on_sale # 🔼 Add this input field to the form
+    end
+    f.actions
   end
 
   show do
@@ -24,6 +35,7 @@ ActiveAdmin.register Product do
       row :description
       row :price
       row :stock_quantity
+      row :on_sale
       row :category
       row :image do |product|
         image_tag product.image if product.image.attached?

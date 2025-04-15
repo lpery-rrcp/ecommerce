@@ -1,32 +1,48 @@
 <h1>Welcome to Crafters Den</h1>
 
 <% if user_signed_in? %>
-  <!-- Show user-related options when signed in -->
   <p>Welcome, <%= current_user.email %>!</p>
   <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
 <% else %>
-  <!-- Show login and signup options when not signed in -->
   <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %> |
   <%= link_to "Login", new_user_session_path, class: "btn btn-primary" %>
 <% end %>
 
 <h2>Products</h2>
 
+<!-- FILTER LINKS -->
+<div class="filters mb-3">
+  <%= link_to "All Products", products_path, class: "btn btn-outline-secondary" %> |
+  <%= link_to "On Sale", products_path(filter: "on_sale"), class: "btn btn-outline-success" %> |
+  <%= link_to "New", products_path(filter: "new"), class: "btn btn-outline-primary" %> |
+  <%= link_to "Recently Updated", products_path(filter: "recently_updated"), class: "btn btn-outline-warning" %>
+</div>
+
 <% if @products.any? %>
   <ul>
     <% @products.each do |product| %>
       <li>
-        <%= product.name %> - <%= number_to_currency(product.price) %>
-        <%= link_to "View Product", product_path(product), class: "btn btn-info" %>
+        <strong><%= product.name %></strong> -
+        <%= number_to_currency(product.price) %>
+
+        <!-- Product Tags -->
+        <% if product.on_sale %>
+          <span class="badge bg-success">On Sale</span>
+        <% end %>
+        <% if product.created_at >= 3.days.ago %>
+          <span class="badge bg-primary">New</span>
+        <% elsif product.updated_at >= 3.days.ago && product.created_at < 3.days.ago %>
+          <span class="badge bg-warning">Updated</span>
+        <% end %>
+
+        <%= link_to "View Product", product_path(product), class: "btn btn-info btn-sm" %>
       </li>
     <% end %>
   </ul>
 
-  <!-- Add pagination controls here -->
   <%= paginate @products %>
-
 <% else %>
   <p>No products available.</p>
 <% end %>
 
-<%= link_to "View Cart", cart_path, class: "btn btn-primary" %>
+<%= link_to "View Cart", cart_path, class: "btn btn-primary mt-3" %>
