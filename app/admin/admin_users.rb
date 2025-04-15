@@ -1,4 +1,6 @@
 ActiveAdmin.register Order do
+  permit_params :name, :description, :category_id, :price, :stock_quantity, :seller_id, :image, :on_sale
+
   # Customize the index page here
   index do
     selectable_column
