@@ -5,8 +5,14 @@ class CheckoutsController < ApplicationController
     cart = session[:cart] || {}
     raise "Cart is empty" if cart.empty?
 
+    province = current_user.province
+    raise "Missing address" if province.nil?
+
+    subtotal = 0
     line_items = cart.map do |product_id, quantity|
       product = Product.find(product_id)
+      subtotal += product.price * quantity.to_i
+
       {
         price_data: {
           currency: "usd",
@@ -18,6 +24,21 @@ class CheckoutsController < ApplicationController
         quantity: quantity
       }
     end
+
+    # Calculate tax and add as a separate line item
+    tax = TaxCalculator.calculate_tax(subtotal, province)
+    total_tax = tax[:total_tax]
+
+    line_items << {
+      price_data: {
+        currency: "usd",
+        unit_amount: (total_tax * 100).to_i,
+        product_data: {
+          name: "Sales Tax"
+        }
+      },
+      quantity: 1
+    }
 
     session = Stripe::Checkout::Session.create(
       payment_method_types: [ "card" ],
@@ -31,6 +52,7 @@ class CheckoutsController < ApplicationController
     redirect_to session.url, allow_other_host: true
   end
 
+
   def success
     cart = session[:cart] || {}
     return redirect_to root_path, alert: "Cart is empty." if cart.empty?
@@ -42,16 +64,14 @@ class CheckoutsController < ApplicationController
     province = current_user.province
     order = current_user.orders.build(status: :paid, customer_id: current_user.id)
 
-
     subtotal = 0
-
     cart.each do |product_id, qty|
       product = Product.find(product_id)
       subtotal += product.price * qty.to_i
       order.order_items.build(product: product, quantity: qty, unit_price: product.price)
     end
 
-    tax_details = province.calculate_tax(subtotal)
+    tax_details = TaxCalculator.calculate_tax(subtotal, province)
     order.total_price = (subtotal + tax_details[:total_tax]).round
     order.save!
 
@@ -68,25 +88,8 @@ class CheckoutsController < ApplicationController
     redirect_to orders_path
   end
 
-
   def cancel
     flash[:alert] = "Payment canceled."
     redirect_to cart_path
-  end
-
-  private
-
-  def calculate_tax(total)
-    province = current_user.province
-    gst = (total * province.gst.to_f).round(2)
-    pst = (total * province.pst.to_f).round(2)
-    hst = (total * province.hst.to_f).round(2)
-
-    {
-      gst: gst,
-      pst: pst,
-      hst: hst,
-      total_tax: (gst + pst + hst).round(2)
-    }
   end
 end

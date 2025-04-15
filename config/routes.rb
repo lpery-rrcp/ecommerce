@@ -38,10 +38,9 @@ Rails.application.routes.draw do
   # Orders for Users
   resources :orders, only: [ :index, :show ]
 
-  # pages
+  # Pages
   get "/about",   to: "pages#show", defaults: { slug: "about" }
   get "/contact", to: "pages#show", defaults: { slug: "contact" }
-
 
   # Admin Namespace (explicitly declared if extended later)
   namespace :admin do

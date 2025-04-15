@@ -32,13 +32,25 @@
     </tbody>
   </table>
 
-  <h3>Total: <%= number_to_currency(@total) %></h3>
+  <h3>Subtotal: <%= number_to_currency(@total) %></h3>
 
-  <!-- Checkout Button -->
-  <%= button_to "Checkout", checkouts_path, method: :post, class: "btn btn-primary" %>
+  <% if current_user.province.nil? %>
+    <p>Please complete your address information before proceeding to checkout.</p>
+    <%= link_to "Add Address", edit_profile_path, class: "btn btn-warning" %>
+  <% else %>
+    <% tax_details = TaxCalculator.calculate_tax(@total, current_user.province) %>
+    <h4>Taxes:</h4>
+    <ul>
+      <li>GST: <%= number_to_currency(tax_details[:gst]) %></li>
+      <li>PST: <%= number_to_currency(tax_details[:pst]) %></li>
+      <li>HST: <%= number_to_currency(tax_details[:hst]) %></li>
+    </ul>
+    <h3>Total: <%= number_to_currency(@total + tax_details[:total_tax]) %></h3>
+
+    <%= button_to "Checkout", checkouts_path(total: @total + tax_details[:total_tax]), method: :post, class: "btn btn-primary" %>
+  <% end %>
 
   <div style="margin-top: 1em;">
-    <!-- Continue Shopping Button -->
     <%= link_to "⬅ Continue Shopping", products_path, class: "btn btn-outline-dark" %>
   </div>
 

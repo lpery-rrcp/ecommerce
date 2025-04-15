@@ -1,3 +1,33 @@
-<h1>🎉 Order Placed!</h1>
-<p>Thanks for shopping with Crafters Den!</p>
-<%= link_to "Back to Shop", products_path %>
+<h1>Checkout Success</h1>
+
+<p>Your order has been successfully placed! Here is your invoice:</p>
+
+<h3>Order Details:</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order.order_items.each do |item| %>
+      <tr>
+        <td><%= item.product.name %></td>
+        <td><%= number_to_currency(item.unit_price) %></td>
+        <td><%= item.quantity %></td>
+        <td><%= number_to_currency(item.unit_price * item.quantity) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h4>Subtotal: <%= number_to_currency(@order.subtotal) %></h4>
+<h4>GST: <%= number_to_currency(@order.gst) %></h4>
+<h4>PST: <%= number_to_currency(@order.pst) %></h4>
+<h4>HST: <%= number_to_currency(@order.hst) %></h4>
+<h3>Total: <%= number_to_currency(@order.total_price) %></h3>
+
+<%= link_to "Back to Orders", orders_path, class: "btn btn-primary" %>
