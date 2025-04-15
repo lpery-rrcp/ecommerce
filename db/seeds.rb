@@ -1,19 +1,17 @@
+# Clean database
 puts "🧼 Cleaning database..."
 
-# Destroy child/dependent records first
-OrderItem.destroy_all
-Order.destroy_all
-Review.destroy_all
-Payment.destroy_all
-
-# Then destroy parent records
+puts "Destroying products..."
 Product.destroy_all
+
+puts "Destroying categories..."
 Category.destroy_all
+
+puts "Destroying users..."
 User.destroy_all
-Page.destroy_all
 
-puts "✅ Database cleaned"
-
+puts "Destroying provinces..."
+Province.destroy_all
 
 # Create a default province
 puts "🌾 Creating province..."
@@ -45,17 +43,6 @@ customer = User.create!(
   role: :customer,
   province: manitoba
 )
-
-Page.find_or_create_by!(slug: 'about') do |page|
-  page.title = 'About Us'
-  page.content = 'This is the about page.'
-end
-
-Page.find_or_create_by!(slug: 'contact') do |page|
-  page.title = 'Contact Us'
-  page.content = 'This is the contact page.'
-end
-
 
 # Create categories
 puts "📁 Creating categories..."
