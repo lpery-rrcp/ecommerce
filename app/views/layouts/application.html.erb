@@ -10,20 +10,11 @@
     <%= csp_meta_tag %>
     <%= yield :head %>
 
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-
-    <%# <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%# <%= javascript_importmap_tags %>
   </head>
 
   <body>
@@ -33,15 +24,18 @@
       <%= link_to 'Contact', contact_path %> |
       <%= link_to 'Products', products_path %> |
       <%= link_to 'Categories', categories_path %>
-
     </nav>
 
-    <% if flash[:notice] %>
-    <div class="flash-notice">
-      <%= flash[:notice] %>
+    <div class="container mt-2 mb-3">
+      <%= render_breadcrumbs %>
     </div>
-    <% end %>
-    <%= yield %>
 
+    <% if flash[:notice] %>
+      <div class="flash-notice">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+
+    <%= yield %>
   </body>
 </html>

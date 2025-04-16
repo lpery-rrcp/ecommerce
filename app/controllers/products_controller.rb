@@ -32,7 +32,7 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = Product.find(params[:id])
-    @reviews = @product.reviews.page(params[:page]).per(1) # Switch it to 5 later
+    @product = Product.includes(:category).find(params[:id])
+    @reviews = @product.reviews.page(params[:page]).per(1)
   end
 end
