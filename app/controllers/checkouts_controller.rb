@@ -62,30 +62,37 @@ class CheckoutsController < ApplicationController
     end
 
     province = current_user.province
-    order = current_user.orders.build(status: :paid, customer_id: current_user.id)
+    order = current_user.orders.build(status: :unpaid)
 
     subtotal = 0
     cart.each do |product_id, qty|
       product = Product.find(product_id)
       subtotal += product.price * qty.to_i
-      order.order_items.build(product: product, quantity: qty, unit_price: product.price)
+      order.order_items.build(product: product, quantity: qty.to_i, unit_price: product.price)
     end
 
     tax_details = TaxCalculator.calculate_tax(subtotal, province)
     order.total_price = (subtotal + tax_details[:total_tax]).round
-    order.save!
 
-    Payment.create!(
-      order: order,
-      user: current_user,
-      amount: order.total_price,
-      status: :completed,
-      payment_method: :credit_card
-    )
+    if order.save
+      # Create a payment record (assuming the payment actually succeeded at this point)
+      Payment.create!(
+        order: order,
+        user: current_user,
+        amount: order.total_price,
+        status: :completed,
+        payment_method: :credit_card
+      )
 
-    session[:cart] = {}
-    flash[:notice] = "✅ Payment successful!"
-    redirect_to orders_path
+      # ✅ Update order status to paid after payment is created
+      order.update!(status: :paid)
+
+      session[:cart] = {}
+      flash[:notice] = "✅ Payment successful!"
+      redirect_to orders_path
+    else
+      redirect_to checkout_path, alert: "Something went wrong while processing your order."
+    end
   end
 
   def cancel
