@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_15_214222) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_16_160932) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -61,6 +61,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_15_214222) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "role", default: 0, null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
@@ -113,6 +114,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_15_214222) do
     t.integer "payment_method"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "stripe_payment_id"
     t.index ["order_id"], name: "index_payments_on_order_id"
     t.index ["user_id"], name: "index_payments_on_user_id"
   end
