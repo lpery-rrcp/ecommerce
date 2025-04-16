@@ -48,6 +48,9 @@ gem "pg"
 gem "faker"
 gem "sprockets-rails"
 gem "sassc"
+gem "bootstrap", "~> 5.1"
+gem "sassc-rails"
+
 
 
 

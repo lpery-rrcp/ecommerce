@@ -1,0 +1,16 @@
+<% if reviews.any? %>
+  <ul class="list-group mb-3">
+    <% reviews.each do |review| %>
+      <li class="list-group-item">
+        <strong><%= review.user.email if review.user %></strong><br>
+        <small class="text-muted">Rating: <%= review.rating %>/5</small><br>
+        <p><%= review.comment %></p> <!-- Display review comment -->
+      </li>
+    <% end %>
+  </ul>
+
+  <!-- Pagination for reviews -->
+  <%= paginate reviews %>
+<% else %>
+  <p>No reviews yet.</p>
+<% end %>

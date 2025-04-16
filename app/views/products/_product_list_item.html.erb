@@ -1,0 +1,15 @@
+<li>
+  <strong><%= product.name %></strong> -
+  <%= number_to_currency(product.price) %>
+
+  <% if product.on_sale %>
+    <span class="badge bg-success">On Sale</span>
+  <% end %>
+  <% if product.created_at >= 3.days.ago %>
+    <span class="badge bg-primary">New</span>
+  <% elsif product.updated_at >= 3.days.ago && product.created_at < 3.days.ago %>
+    <span class="badge bg-warning">Updated</span>
+  <% end %>
+
+  <%= link_to "View Product", product_path(product), class: "btn btn-info btn-sm" %>
+</li>

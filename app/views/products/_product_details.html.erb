@@ -1,0 +1,6 @@
+<div class="product-details">
+  <h2><%= product.name %></h2>
+  <p><strong>Price:</strong> <%= number_to_currency(product.price) %></p>
+  <p><strong>Description:</strong> <%= product.description %></p>
+  <p><strong>Category:</strong> <%= product.category.name if product.category %></p>
+</div>
