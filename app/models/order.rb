@@ -3,7 +3,7 @@ class Order < ApplicationRecord
 
   has_many :order_items, dependent: :destroy
 
-  enum :status, { pending: 0, shipped: 1, delivered: 2, cancelled: 3, paid: 4 }
+  enum :status, { pending: 0, shipped: 1, delivered: 2, cancelled: 3, paid: 4, unpaid: 5 }
 
   validates :status, presence: true
 

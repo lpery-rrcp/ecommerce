@@ -1,5 +1,31 @@
+<h1>Order #<%= @order.id %></h1>
+
+<h2>Items:</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Qty</th>
+      <th>Price</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order.order_items.each do |item| %>
+      <tr>
+        <td><%= item.product.name %></td>
+        <td><%= item.quantity %></td>
+        <td><%= number_to_currency(item.unit_price) %></td>
+        <td><%= number_to_currency(item.unit_price * item.quantity) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
 <p><strong>Subtotal:</strong> <%= number_to_currency(@order.order_items.sum { |i| i.unit_price * i.quantity }) %></p>
 <p><strong>GST:</strong> <%= number_to_currency(@order.user.province.gst * @order.total_price) %></p>
 <p><strong>PST:</strong> <%= number_to_currency(@order.user.province.pst * @order.total_price) %></p>
 <p><strong>HST:</strong> <%= number_to_currency(@order.user.province.hst * @order.total_price) %></p>
 <p><strong>Total:</strong> <%= number_to_currency(@order.total_price) %></p>
+
+<%= link_to "⬅ Back to Orders", orders_path %>
