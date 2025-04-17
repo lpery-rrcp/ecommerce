@@ -10,6 +10,10 @@ class User < ApplicationRecord
   has_many :orders, foreign_key: "user_id"
   has_many :customer_orders, class_name: "Order", foreign_key: "customer_id"
 
+  validates :email, presence: true, uniqueness: true
+  validates :address, presence: true
+  validates :city, presence: true
+
   def self.ransackable_attributes(auth_object = nil)
     [ "address", "city", "created_at", "email", "encrypted_password", "id", "id_value", "province_id", "remember_created_at", "reset_password_sent_at", "reset_password_token", "role", "updated_at" ]
   end
