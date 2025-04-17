@@ -1,6 +1,5 @@
 <h1>Welcome to Crafters Den</h1>
 
-<%# ---- Regular User Section ---- %>
 <% if user_signed_in? %>
   <p>Welcome, <%= current_user.email %>!</p>
   <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
@@ -9,7 +8,7 @@
   <%= link_to "Login", new_user_session_path, class: "btn btn-primary" %>
 <% end %>
 
-<%# ---- Admin Section ---- %>
+<%# Admin Section %>
 <% if admin_user_signed_in? %>
   <p class="mt-3">Logged in as admin: <%= current_admin_user.email %></p>
   <%= link_to "Admin Dashboard", admin_root_path, class: "btn btn-warning" %> |

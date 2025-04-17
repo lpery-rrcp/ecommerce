@@ -44,6 +44,13 @@ customer = User.create!(
   province: manitoba
 )
 
+puts "creating Admin user"
+AdminUser.create!(
+  email: 'admin@example.com',
+  password: 'password',
+  password_confirmation: 'password'
+)
+
 # Create categories
 puts "📁 Creating categories..."
 category1 = Category.create!(name: "Woodworking")

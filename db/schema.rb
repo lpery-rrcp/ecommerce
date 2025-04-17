@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_16_160932) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_17_034029) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -119,6 +119,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_16_160932) do
     t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
+  create_table "product_promotions", force: :cascade do |t|
+    t.integer "product_id", null: false
+    t.integer "promotion_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_product_promotions_on_product_id"
+    t.index ["promotion_id"], name: "index_product_promotions_on_promotion_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -130,6 +139,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_16_160932) do
     t.datetime "updated_at", null: false
     t.boolean "on_sale"
     t.index ["category_id"], name: "index_products_on_category_id"
+  end
+
+  create_table "promotions", force: :cascade do |t|
+    t.string "name"
+    t.decimal "discount"
+    t.text "description"
+    t.date "start_date"
+    t.date "end_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "provinces", force: :cascade do |t|
@@ -176,6 +195,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_16_160932) do
   add_foreign_key "orders", "users", column: "customer_id"
   add_foreign_key "payments", "orders"
   add_foreign_key "payments", "users"
+  add_foreign_key "product_promotions", "products"
+  add_foreign_key "product_promotions", "promotions"
   add_foreign_key "products", "categories"
   add_foreign_key "products", "users", column: "seller_id"
   add_foreign_key "reviews", "users"
