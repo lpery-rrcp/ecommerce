@@ -1,6 +1,6 @@
 ActiveAdmin.register Product do
-  permit_params :name, :description, :category_id, :price, :stock_quantity, :seller_id, :image, :on_sale
-  # 🔼 Added `:on_sale` to permit_params
+  permit_params :name, :description, :category_id, :price, :stock_quantity,
+                :seller_id, :image, :on_sale, promotion_ids: []
 
   remove_filter :image_attachment, :image_blob
 
@@ -9,7 +9,7 @@ ActiveAdmin.register Product do
     column :name
     column :price
     column :stock_quantity
-    column :on_sale # Optionally display on_sale status
+    column :on_sale
     column :category
     column :created_at
     actions
@@ -24,7 +24,8 @@ ActiveAdmin.register Product do
       f.input :stock_quantity
       f.input :seller
       f.input :image, as: :file
-      f.input :on_sale # 🔼 Add this input field to the form
+      f.input :on_sale
+      f.input :promotions, as: :check_boxes, collection: Promotion.all
     end
     f.actions
   end
@@ -37,6 +38,9 @@ ActiveAdmin.register Product do
       row :stock_quantity
       row :on_sale
       row :category
+      row :promotions do |product|
+        product.promotions.map(&:name).join(", ")
+      end
       row :image do |product|
         image_tag product.image if product.image.attached?
       end
